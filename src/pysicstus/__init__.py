@@ -1,3 +1,13 @@
+''' 
+ PySictus module to encapsulate Sictus Prolog process management
+ 
+ Licensed with Apache Public License
+ by AAAI Research Group
+ Department of Information Engineering and Computer Science and Mathematics
+ University of L'Aquila, ITALY
+ http://www.disim.univaq.it
+'''
+
 __author__ = 'giodegas'
 
 import pexpect
