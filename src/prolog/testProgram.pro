@@ -8,7 +8,7 @@ amico(X,Y):- amico(X,Z),amico(Z,Y).
 ramo_then.
 ramo_else :- fail.
 
-prova :- if(amico(pippo,papero),
+test :- if(amico(pippo,papero),
 			ramo_then,
 			ramo_else).
 			
