@@ -5,14 +5,14 @@ from pysicstus import SicstusProlog, PrologSystem
 # Example 1
 # Spawing and consulting an existing prolog file
 sp = SicstusProlog('test1')
-sp.spawn('prolog/testProgram.pro','test') # non blocking
-sp.waitFor('test OK')
-ans = sp.ask('amico(pippo,pluto)')
+sp.spawn('prolog/testProgram.pro','testGoal') # non blocking
+sp.waitFor('OK')
+ans = sp.ask('friend(pippo,pluto)')
 print ans
-if sp.ask('amico(pippo,pluto)'):
-    print 'ho capito che pippo e pluto sono amici.'
+if sp.ask('friend(pippo,pluto)'):
+    print 'I know that pippo and pluto are friends'
 else:
-    print 'pippo non conosce pluto'
+    print 'Apparently, pippo does not know pluto.'
 print "Is Prolog alive?", sp.isAlive()
 print isinstance(sp, PrologSystem)
 
@@ -21,7 +21,7 @@ print isinstance(sp, PrologSystem)
 sp2 = SicstusProlog('test2')
 sp2.spawn()
 sp2.consultFile('prolog/testProgram.pro','test',debug=True)
-print sp2.ask('amico(pippo,pluto)')
+print sp2.ask('friend(pippo,pluto)')
 
 # Example 3
 # Spawing, then consulting a direct prolog program
