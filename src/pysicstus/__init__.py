@@ -18,7 +18,6 @@ def write2file(fname, txt):
     fout.close()
 
 OPTIONS = '--nologo --noinfo'
-#OPTIONS = '--nologo'
 
 class PrologSystem:
 
@@ -41,28 +40,24 @@ class PrologSystem:
         return cmd
 
     def consultFile(self, fname, goal=None, debug=False, blocking=True, waitString='yes|no'):
-        print  fname, goal
+        print(  fname, goal )
         if self.PrologInt:
             self.PrologInt.sendline("consult('"+fname+"').\r")
             self.waitFor(waitString)
             if goal:
                 if blocking:
-                    # if basedir:
-                    #     print("assert(maspath('"+ basedir + "/" +"').")
-                    #     self.PrologInt.sendline("assert(maspath('"+ basedir + "/" +"')).")
-                    #     idx = self.waitFor('yes|no|Existence error')
-                    print 'asking: ',goal
+                    print( 'asking: ',goal
                     r = self.ask(goal)
                     if debug:
-                        print r
+                        print( r
                 else:
                     self.PrologInt.sendline(goal+'.')
             if debug:
-                print self.PrologInt.before
-                print self.PrologInt.after
+                print( self.PrologInt.before )
+                print( self.PrologInt.after )
         else:
             cmd = self.prepCmd(fname, goal)
-            print 'Consulting a Prolog program: ',cmd
+            print( 'Consulting a Prolog program: ',cmd )
             pexpect.run(cmd)
 
     def consult(self, program, goal=None):
@@ -73,9 +68,9 @@ class PrologSystem:
 
     def spawn(self, fname='', goal=None):
         cmd = self.prepCmd(fname, goal)
-        print "Spawing Prolog system: ",cmd
+        print( "Spawing Prolog system: ",cmd )
         logF = open('log/'+self.name+'.log','w')
-        print 'spawning:     ', cmd, self.basedir
+        print( 'spawning:     ', cmd, self.basedir )
         self.PrologInt = pexpect.spawn(cmd,logfile=logF)
 
     def waitFor(self,msg, debug=False):
@@ -83,7 +78,7 @@ class PrologSystem:
             lst = msg.split('|')
             index = self.PrologInt.expect(lst)
             if debug:
-                print self.PrologInt.match.re.pattern
+                print( self.PrologInt.match.re.pattern )
             self.PrologInt.send('\r')
             return index
 
@@ -91,28 +86,28 @@ class PrologSystem:
         if self.PrologInt:
             self.PrologInt.after = ''
             self.PrologInt.sendline("ensure_loaded('../interpreter/tcpout.pl').")
-
             idx = self.waitFor('yes|no|Existence error')
-
-
-            # self.PrologInt.sendline("ensure_loaded('./util/utilmas.pl').")
-            #
-            # idx = self.waitFor('yes|no|Existence error')
-
             self.PrologInt.sendline(question+'.')
-
-            # self.PrologInt.interact()
-            # idx = self.waitFor('yes|no|Existence error')
-            # .18   Actived Agent agent1 19.
             idx = self.waitFor('\.{18}   Actived Agent [a-zA-Z0-9_]* \.{19}')
-            # idx = 0
             return (idx==0)
+
+    def readAll(self):
+  		    try:
+  		       self.PrologInt.readline()
+  		       self.PrologInt.readline()
+  		       self.PrologInt.readline()
+  		       self.PrologInt.readline()
+  		       i = self.PrologInt.readline()
+  		       return i
+  		    except Exception:
+  		       return "TIMEOUT"
+
 
     def runInteractive(self):
         self.options = ''
         cmd = self.prepCmd('', None)
-        print 'Launching Prolog shell...'
-        print cmd
+        print( 'Launching Prolog shell...' )
+        print( cmd )
         logF = open('log'+self.name+'.log','w')
         self.PrologInt = pexpect.spawn(cmd,logfile=logF)
         self.PrologInt.expect('| ?-')
@@ -144,8 +139,8 @@ class PrologSystem:
                 index = self.PrologInt.expect(waitStr)
                 # self.PrologInt.send('\r')
             if debug:
-                print self.PrologInt.before
-                print self.PrologInt.after
+                print( self.PrologInt.before )
+                print( self.PrologInt.after )
 
     def terminate(self):
         self.PrologInt.terminate(True)
