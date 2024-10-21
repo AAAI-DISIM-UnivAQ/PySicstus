@@ -2,11 +2,12 @@
 
 __author__ = 'giodegas'
 
+import os
 from pysicstus import SicstusProlog, PrologSystem
 
 def main():
     # Example 1
-    sp = SicstusProlog('test1')
+    sp = SicstusProlog('test1', cmd=os.getenv('SICSTUS'))
     sp.spawn('prolog/testProgram.pro', 'testGoal')  # non blocking
     sp.waitFor('OK')
     ans = sp.ask('friend(pippo,pluto)')

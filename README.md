@@ -9,4 +9,7 @@ The Prolog program [src/tcpout.pl](src/tcpout.pl) maybe used to send asynchronou
 
 ###Dependencies###
 
+Sicstus Prolog
 Python library: [pexpect](http://github.com/pexpect/pexpect)
+
+ENVIRONMENT

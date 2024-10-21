@@ -20,7 +20,8 @@ OPTIONS = '--nologo --noinfo'
 
 class PrologSystem:
 
-    def __init__(self, name, cmd='/usr/local/sicstus4.2.3/bin/sicstus', options=OPTIONS):
+    def __init__(self, name, cmd='$HOME/sicstus4.4.1/bin/sicstus', options=OPTIONS):
+        assert cmd is not None, "Specify the sictus binary path or the SICSTUS environment variable"
         self.name = name
         self.PrologCmd = cmd
         self.options = options
