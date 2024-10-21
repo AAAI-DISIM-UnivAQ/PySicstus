@@ -1,0 +1,33 @@
+# Ignore editor settings
+.idea/
+*.iml
+
+# Ignore PyCharm cache
+.cache/
+
+# Ignore Python file with __pycache__
+__pycache__/
+
+# Ignore IDE files
+*.class
+*.pyc
+*.pt
+*.html
+
+# Ignore Python version control
+venv/
+*.egg-info
+
+# Ignore IDE output and terminal
+out/
+run/
+target/
+
+# Ignore IDE temp files
+ tạm/
+
+# Ignore package lock files
+requirements.txt.lock
+
+# Ignore IDE version control
+.idea/workspace.xml

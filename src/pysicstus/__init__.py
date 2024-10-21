@@ -1,27 +1,26 @@
-''' 
+"""
  PySictus module to encapsulate Sictus Prolog process management
  
  Licensed with Apache Public License
  by AAAI Research Group
  Department of Information Engineering and Computer Science and Mathematics
  University of L'Aquila, ITALY
- http://www.disim.univaq.it
-'''
+ https://www.disim.univaq.it
+"""
 
 __author__ = 'giodegas'
 
 import pexpect
 
 def write2file(fname, txt):
-    fout = open(fname,'w')
-    fout.write(txt+'\n')
-    fout.close()
+    with open(fname,'w') as fout:
+        fout.write(txt+'\n')
 
 OPTIONS = '--nologo --noinfo'
 
 class PrologSystem:
 
-    def __init__(self,name,cmd='/usr/local/sicstus4.2.3/bin/sicstus', options=OPTIONS):
+    def __init__(self, name, cmd='/usr/local/sicstus4.2.3/bin/sicstus', options=OPTIONS):
         self.name = name
         self.PrologCmd = cmd
         self.options = options
@@ -46,10 +45,10 @@ class PrologSystem:
             self.waitFor(waitString)
             if goal:
                 if blocking:
-                    print( 'asking: ',goal
+                    print( 'asking: ',goal)
                     r = self.ask(goal)
                     if debug:
-                        print( r
+                        print( r )
                 else:
                     self.PrologInt.sendline(goal+'.')
             if debug:
@@ -61,7 +60,7 @@ class PrologSystem:
             pexpect.run(cmd)
 
     def consult(self, program, goal=None):
-        assert((type(program)==type('')))
+        assert(type(program) == type(''))
         fname = 'prolog/'+self.name+'.pro'
         write2file(fname, program)
         self.consultFile(fname,goal)
@@ -71,7 +70,7 @@ class PrologSystem:
         print( "Spawing Prolog system: ",cmd )
         logF = open('log/'+self.name+'.log','w')
         print( 'spawning:     ', cmd, self.basedir )
-        self.PrologInt = pexpect.spawn(cmd,logfile=logF)
+        self.PrologInt = pexpect.spawn(cmd, logfile=logF)
 
     def waitFor(self,msg, debug=False):
         if self.PrologInt:
@@ -88,19 +87,20 @@ class PrologSystem:
             self.PrologInt.sendline("ensure_loaded('../interpreter/tcpout.pl').")
             idx = self.waitFor('yes|no|Existence error')
             self.PrologInt.sendline(question+'.')
-            idx = self.waitFor('\.{18}   Actived Agent [a-zA-Z0-9_]* \.{19}')
+            idx = self.waitFor('.{18}   Actived Agent [a-zA-Z0-9_]* .{19}')
             return (idx==0)
 
     def readAll(self):
-  		    try:
-  		       self.PrologInt.readline()
-  		       self.PrologInt.readline()
-  		       self.PrologInt.readline()
-  		       self.PrologInt.readline()
-  		       i = self.PrologInt.readline()
-  		       return i
-  		    except Exception:
-  		       return "TIMEOUT"
+        try:
+            self.PrologInt.readline()
+            self.PrologInt.readline()
+            self.PrologInt.readline()
+            self.PrologInt.readline()
+            i = self.PrologInt.readline()
+            return i
+        except Exception as e:
+            print(f"Exception: ", e)
+            return "TIMEOUT"
 
 
     def runInteractive(self):
@@ -109,7 +109,7 @@ class PrologSystem:
         print( 'Launching Prolog shell...' )
         print( cmd )
         logF = open('log'+self.name+'.log','w')
-        self.PrologInt = pexpect.spawn(cmd,logfile=logF)
+        self.PrologInt = pexpect.spawn(cmd, logfile=logF)
         self.PrologInt.expect('| ?-')
         self.PrologInt.before
         self.PrologInt.after,
